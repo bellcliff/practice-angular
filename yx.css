@@ -1,0 +1,10 @@
+#searchStats {
+  line-height: 43px;
+  color: #808080;
+}
+@media screen and (max-width: 600px) {
+  .mobile-hidden {
+    visibility: hidden;
+    display: none;
+  }
+}
