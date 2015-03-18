@@ -1,5 +1,5 @@
 <div id="searchStats">
-  <span>About {{search.results.totalnum}} results.</span>
+  <span>About {{results.totalnum}} results.</span>
 </div>
 <table class="table">
   <tr>
@@ -10,7 +10,7 @@
     <th class="mobile-hidden">tag</th>
     <th class="mobile-hidden"></th>
   </tr>
-  <tr ng-repeat="item in search.results.data" nid="{{item.id}}">
+  <tr ng-repeat="item in results.data" ng-click="viewDetail(item.id)">
     <td>{{item.name | limitTo: 10}}</td>
     <td>{{item.brief | limitTo: 50}}</td>
     <td class="mobile-hidden">{{item.platform}}</td>
@@ -20,5 +20,4 @@
   </tr>
 </table>
 <!-- pagination -->
-
-
+<pagination total-items="results.totalnum" items-per-page="numPerPage" ng-model="currentPage"></pagination>

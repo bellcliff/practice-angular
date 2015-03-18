@@ -1,8 +1,15 @@
 (function(){
   var app = angular.module('youxi', ['ui.bootstrap']);
-  app.controller('SearchController', ['$http', function($http){
-    var ctl = this;
-    this.parseImg = function(img){
+
+  // search result control
+  app.controller('SearchController', ['$scope','$http', function($scope, $http){
+    $scope.results=false
+    ,$scope.query = ''
+    ,$scope.currentPage = 1
+    ,$scope.numPerPage = 20
+    ,$scope.maxSize = 5;
+
+    $scope.parseImg = function(img){
       if (/<img[^>]*>/.test(img)){
         return img;
       }else if(/http:\/\/.*/.test(img)){
@@ -11,36 +18,42 @@
         return '<img href="http://'+img.substr(5)+'">';
       }else
         return img;
-    }
-    this.fetch = function(query){
-      console.log(query);
-      console.log(ctl.running);
-      if (ctl.running){
+    };
+
+    $scope.fetch = function(query){
+      if (! query || query.length == 0){
         return;
       }
-      ctl.running = true;
+      $scope.query = query;
       $http.get("/se", {
-        params: {query: query, db:'xinyou'}
+        params: {
+          db: 'xinyou',
+          query: query,
+          s: ($scope.currentPage - 1) * $scope.numPerPage,
+          n: $scope.numPerPage
+        }
       }).success(function(data){
-        ctl.running = false;
-        console.log(data);
-        ctl.results = data;
-//        ctl.results = {totalnum: data.totalnum, data: []};
-//        angular.forEach(data.data, function(item){
-//          img = ctl.parseImg(item.img);
-//          item.img1 = angular.element(img).prop('src') || angular.element(img).prop('data-original');
-//          ctl.results.data.push(item);
-//        });
+        $scope.results = data;
       }).error(function(){
-        console.log(arguments);
-        ctl.results = false;
+        $scope.results = false;
       });
     };
+    $scope.viewDetail = function(itemId){
+      console.log(itemId);
+    }
+    $scope.numPages = function () {
+      return Math.ceil($scope.results.totalsum / $scope.numPerPage);
+    };
+    $scope.$watch("currentPage", function(newValue, oldValue) {
+      $scope.fetch($scope.query);
+    });
   }]);
+
   app.directive('searchResults', function(){
     return {
       restrict: 'A',
-      templateUrl: 'yx-results.html'
+      templateUrl: 'yx-results.html',
+      scope: false,
     };
   });
   app.directive('searchNav', function(){

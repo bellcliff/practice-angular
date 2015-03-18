@@ -13,14 +13,14 @@
   <body>
     <div search-nav></div>
     <div class="container">
-      <div ng-controller="SearchController as search">
+      <div ng-controller="SearchController">
         <form novalidate>
           <div class="form-group">
             <input type="text" class="form-control" ng-model="query" ng-init="query='女神'">
           </div>
-          <button type="submit" class="btn btn-default" ng-click="search.fetch(query)">Search</button>
+          <button type="submit" class="btn btn-default" ng-click="fetch(query)">Search</button>
         </form>
-        <div ng-show="!!search.results" search-results />
+        <div ng-show="results && results.data.length > 0" search-results id="search_results">
         </div>
       </div>
     </div>
