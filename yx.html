@@ -16,7 +16,7 @@
       <div ng-controller="SearchController">
         <form novalidate>
           <div class="form-group">
-            <input type="text" class="form-control" ng-model="query" ng-init="query='女神'">
+            <input type="text" auto-complete class="form-control" ng-model="query" ng-init="query='女神'" typeahead="sug for sug in getSugs($viewValue)">
           </div>
           <button type="submit" class="btn btn-default" ng-click="fetch(query)">Search</button>
         </form>

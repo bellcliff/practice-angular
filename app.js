@@ -38,9 +38,23 @@
         $scope.results = false;
       });
     };
+
+    $scope.getSugs = function(q){
+      return $http.get('/sug', {
+        params: {
+          db: 'xinyou',
+          query: q
+        }
+      }).then(function(resp){
+        console.log(resp.data);
+        return resp.data.sug;
+      });
+    }
+
     $scope.viewDetail = function(itemId){
       console.log(itemId);
     }
+
     $scope.numPages = function () {
       return Math.ceil($scope.results.totalsum / $scope.numPerPage);
     };
@@ -56,10 +70,12 @@
       scope: false,
     };
   });
+
   app.directive('searchNav', function(){
     return {
       restrict: 'A',
       templateUrl: 'yx-nav.html'
     };
   });
+
 })()
