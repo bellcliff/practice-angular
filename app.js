@@ -1,5 +1,5 @@
 (function(){
-  var app = angular.module('youxi', []);
+  var app = angular.module('youxi', ['ui.bootstrap']);
   app.controller('SearchController', ['$http', function($http){
     var ctl = this;
     this.parseImg = function(img){
