@@ -1,30 +1,34 @@
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">新游搜索</a>
-    </div>
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">新游搜索</a>
+		</div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#xinyou">新游<span class="sr-only">(current)</span></a></li>
-        <li><a href="#gonglv">攻略</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">更多<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#libao">礼包</a></li>
-            <li><a href="#pingce">评测</a></li>
-            <li><a href="#wenda">新游问答</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li ng-class="navClass('xinyou')"><a href="" ng-click="setDb('xinyou')">新游<span
+						class="sr-only">(current)</span></a></li>
+				<li ng-class="navClass('gonglv')"><a href="" ng-click="setDb('gonglv')">攻略</a></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-expanded="false">更多<span
+						class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li ng-class="navClass('libao')"><a href="" ng-click="setDb('libao')">礼包</a></li>
+						<li ng-class="navClass('pingce')"><a href="" ng-click="setDb('pingce')">评测</a></li>
+						<li ng-class="navClass('wenda')"><a href="" ng-click="setDb('wenda')">新游问答</a></li>
+					</ul></li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid -->
 </nav>

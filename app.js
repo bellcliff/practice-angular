@@ -5,6 +5,7 @@
   app.controller('SearchController', ['$scope','$http', function($scope, $http){
     $scope.results=false
     ,$scope.query = ''
+    ,$scope.querydb = 'xinyou'
     ,$scope.currentPage = 1
     ,$scope.numPerPage = 20
     ,$scope.maxSize = 5;
@@ -19,6 +20,15 @@
       }else
         return img;
     };
+    
+    $scope.navClass = function(qdb){
+      if (qdb == $scope.querydb){
+        return 'active';
+      }
+    };
+    $scope.setDb = function(qdb){
+      $scope.querydb = qdb;
+    };
 
     $scope.fetch = function(query){
       if (! query || query.length == 0){
@@ -27,7 +37,7 @@
       $scope.query = query;
       $http.get("/se", {
         params: {
-          db: 'xinyou',
+          db: $scope.querydb,
           query: query,
           s: ($scope.currentPage - 1) * $scope.numPerPage,
           n: $scope.numPerPage
