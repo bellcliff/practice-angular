@@ -23,8 +23,7 @@
 			<form novalidate>
 				<div class="form-group">
 					<input type="text" auto-complete class="form-control"
-						ng-model="query" ng-init="query='女神'"
-						typeahead="sug for sug in getSugs($viewValue)"
+						ng-model="query" typeahead="sug for sug in getSugs($viewValue)"
 						typeahead-wait-ms=500 typeahead-on-select="fetch($label)">
 				</div>
 				<button type="submit" class="btn btn-default"
