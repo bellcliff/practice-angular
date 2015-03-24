@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html ng-app="youxi">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="yx.css" />
-    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-  </head>
-  <body>
-    <div search-nav></div>
-    <div class="container">
-      <div ng-controller="SearchController">
-        <form novalidate>
-          <div class="form-group">
-            <input type="text" auto-complete class="form-control" ng-model="query" ng-init="query='女神'" typeahead="sug for sug in getSugs($viewValue)">
-          </div>
-          <button type="submit" class="btn btn-default" ng-click="fetch(query)">Search</button>
-        </form>
-        <div ng-show="results && results.data.length > 0" search-results id="search_results">
-        </div>
-      </div>
-    </div>
-    <script type="text/javascript" src="app.js"></script>
-  </body>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="yx.css" />
+<script type="text/javascript"
+	src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript"
+	src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript"
+	src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+</head>
+<body>
+	<div search-nav></div>
+	<div class="container">
+		<div ng-controller="SearchController">
+			<form novalidate>
+				<div class="form-group">
+					<input type="text" auto-complete class="form-control"
+						ng-model="query" ng-init="query='女神'"
+						typeahead="sug for sug in getSugs($viewValue)"
+						typeahead-wait-ms=500 typeahead-on-select="fetch($label)">
+				</div>
+				<button type="submit" class="btn btn-default"
+					ng-click="fetch(query)">Search</button>
+			</form>
+			<div ng-show="results && results.data.length > 0" search-results
+				id="search_results"></div>
+		</div>
+	</div>
+	<script type="text/javascript" src="app.js"></script>
+</body>
 </html>
