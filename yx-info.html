@@ -1,15 +1,16 @@
 <div class='panel panel-default'>
   <div class="panel-heading">
     <div class="panel-title">
-      <h4>{{result.name}}</h4>
-    </div>
+      <h4>{{result.name}}</h4></div>
   </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-4 ih-cell">
-        <img ng-src="{{parseImg(result.img)}}"></img>
+        <img ng-src="{{parseImg(result.img)}}" max-width=30></img>
       </div>
-      <div class="col-xs-2 ih-cell col-center"></div>
+      <div class="col-xs-2 ih-cell col-center">
+        <span class="label label-default" ng-repeat='tag in result.tag.split(",")'>{{tag}}</span>
+      </div>
       <div class="col-xs-1 ih-cell" id="ih_score"></div>
     </div>
   </div>

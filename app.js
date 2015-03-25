@@ -110,7 +110,7 @@
         }, function(newValue, oldValue) {
           console.log($location.search());
           var newQuery = false;
-          if (!!newValue.query && newValue.query !== $scope.query) {
+          if (!!newValue.query && (newValue.query !== $scope.query || newValue.query !== oldValue.query)) {
             $scope.query = newValue.query;
             $scope.fetch();
           } else if (!!newValue.queryid && newValue.queryid !== $scope.queryid) {
