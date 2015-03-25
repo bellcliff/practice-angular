@@ -36,6 +36,7 @@
 
         $scope.fetch = function(query) {
           if (!query || query.length == 0) { return; }
+          
           $scope.query = query;
           $http.get("/se", {
             params: {
@@ -46,7 +47,6 @@
             }
           }).success(function(data) {
             $scope.results = data;
-            $location.search('query', query);
           }).error(function() {
             $scope.results = false;
           });
@@ -59,7 +59,6 @@
               query: q
             }
           }).then(function(resp) {
-            console.log(resp.data);
             return resp.data.sug;
           });
         }
@@ -76,7 +75,8 @@
         });
 
         $scope.init = function() {
-          console.log($location.hash())
+          console.log($location.hash());
+          console.log($location.search());
         };
         $scope.init();
       }]);
