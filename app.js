@@ -1,4 +1,4 @@
-(function(angular) {
+(function(angular, $) {
   angular.module('xinyou', ['ui.bootstrap'])
     .controller(
       'SearchController', ['$scope', '$http', '$location', function($scope, $http, $location) {
@@ -8,17 +8,13 @@
           $scope.currentPage = 1,
           $scope.numPerPage = 20,
           $scope.maxSize = 5,
-          $scope.showViewIndex = 0;
+          $scope.showViewIndex = 0,
+          $scope.result = false;
 
         $scope.parseImg = function(img) {
-          if (/<img[^>]*>/.test(img)) {
-            return img;
-          } else if (/http:\/\/.*/.test(img)) {
-            return '<img href="' + img + '">';
-          } else if (/https:\/\/.*/.test(img)) {
-            return '<img href="http://' + img.substr(5) + '">';
-          } else {
-            return img;
+          var dom = $(img);
+          if(dom.data('original')){
+            return dom.data('original');
           }
         };
 
@@ -56,17 +52,36 @@
           }).success(function(data) {
             $scope.showViewIndex = 1;
             $scope.results = data;
-            $location.search('query', $scope.query);
+            $location.search({'query': $scope.query});
           }).error(function() {
             $scope.results = false;
           });
         };
 
-        $scope.getSugs = function(q) {
+        $scope.fetchInfo = function() {
+          console.log('fetch ' + $scope.queryid);
+          $http.get('/info', {
+            params: {
+              db: $scope.querydb,
+              query: $scope.queryid
+            }
+          }).success(function(data) {
+            if (parseInt($scope.queryid) == parseInt(data.query)) {
+              $scope.showViewIndex = 2;
+              $scope.result = data.data;
+              console.log($scope.result);
+              $location.search({'queryid': $scope.queryid});
+            }
+          }).error(function() {
+            console.log(data);
+          });
+        };
+
+        $scope.getSugs = function() {
           return $http.get('/sug', {
             params: {
               db: 'xinyou',
-              query: q
+              query: $scope.query
             }
           }).then(function(resp) {
             return resp.data.sug;
@@ -75,6 +90,11 @@
 
         $scope.numPages = function() {
           return Math.ceil($scope.results.totalsum / $scope.numPerPage);
+        };
+
+        $scope.viewInfo = function(queryid) {
+          $scope.queryid = queryid;
+          $scope.fetchInfo();
         };
 
         // watch page change in results
@@ -86,20 +106,18 @@
 
         // watch query change in location
         $scope.$watch(function() {
-          return $location.search().query;
+          return $location.search();
         }, function(newValue, oldValue) {
-          console.log(newValue + " - " + oldValue + " | " + $scope.query);
-          if (newValue !== oldValue || newValue !== $scope.query) {
-            $scope.query = newValue;
+          console.log($location.search());
+          var newQuery = false;
+          if (!!newValue.query && newValue.query !== $scope.query) {
+            $scope.query = newValue.query;
             $scope.fetch();
+          } else if (!!newValue.queryid && newValue.queryid !== $scope.queryid) {
+            $scope.queryid = newValue.queryid;
+            $scope.fetchInfo();
           }
         });
-
-        // link info page
-        $scope.viewDetail = function(rid) {
-          $scope.showViewIndex = 2;
-        };
-
       }]
     ).directive('yxInput', function() {
       return {
@@ -121,7 +139,8 @@
     }).directive('yxInfo', function() {
       return {
         restrict: 'A',
-        templateUrl: 'yx-info.html'
+        templateUrl: 'yx-info.html',
+        scope: false,
       };
     });
-})(window.angular)
+})(window.angular, window.jQuery)
