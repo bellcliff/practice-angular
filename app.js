@@ -12,9 +12,46 @@
           $scope.result = false;
 
         $scope.parseImg = function(img) {
-          var dom = $(img);
-          if(dom.data('original')){
-            return dom.data('original');
+          if (!!img) {
+            if (img.match(/<img[^>]+>/)) {
+              return $(img).data('original') || $(img).attr('src');
+            } else if (img.match(/http:\/\/.*/)) {
+              return img;
+            }
+          } else {
+            return '';
+          }
+        };
+
+        $scope.parseZUTU = function(img) {
+          var slides = [];
+          if (!img) {
+            return slides;
+          }
+          var first = 'active';
+          if (img.match(/^http/)) {
+            $.each(img.split('http://'), function(idx, imgURL) {
+              if (imgURL.length == 0)
+                return;
+              slides.push({
+                'image': 'http://' + imgURL,
+                'active': first
+              });
+              first = '';
+            });
+            return slides;
+          } else {
+            $.each($(img), function(idx, _dom) {
+              var dom = $(_dom);
+              if (dom.prop("tagName") == 'IMG' && dom.attr('src')) {
+                slides.push({
+                  'image': dom.attr('src'),
+                  'active': first
+                });
+                first = '';
+              }
+            });
+            return slides;
           }
         };
 
@@ -50,9 +87,12 @@
               n: $scope.numPerPage
             }
           }).success(function(data) {
+            console.log(data);
             $scope.showViewIndex = 1;
             $scope.results = data;
-            $location.search({'query': $scope.query});
+            $location.search({
+              'query': $scope.query
+            });
           }).error(function() {
             $scope.results = false;
           });
@@ -60,17 +100,25 @@
 
         $scope.fetchInfo = function() {
           console.log('fetch ' + $scope.queryid);
+          $scope.result = {
+            'inited': false
+          };
           $http.get('/info', {
             params: {
               db: $scope.querydb,
               query: $scope.queryid
             }
           }).success(function(data) {
-            if (parseInt($scope.queryid) == parseInt(data.query)) {
+            console.log(data);
+            if (parseInt($scope.queryid) == parseInt(data.query) && !!data.data) {
               $scope.showViewIndex = 2;
               $scope.result = data.data;
-              console.log($scope.result);
-              $location.search({'queryid': $scope.queryid});
+              $scope.result.imgURL = $scope.parseImg($scope.result.img) || '';
+              $scope.result.slides = $scope.parseZUTU($scope.result.zutu);
+              $scope.result.inited = true;
+              $location.search({
+                'queryid': $scope.queryid
+              });
             }
           }).error(function() {
             console.log(data);
@@ -99,16 +147,13 @@
 
         // watch page change in results
         $scope.$watch("currentPage", function(newValue, oldValue) {
-          if (newValue !== oldValue) {
-            $scope.fetch($scope.query);
-          }
+          $scope.fetch();
         });
 
         // watch query change in location
         $scope.$watch(function() {
           return $location.search();
         }, function(newValue, oldValue) {
-          console.log($location.search());
           var newQuery = false;
           if (!!newValue.query && (newValue.query !== $scope.query || newValue.query !== oldValue.query)) {
             $scope.query = newValue.query;
@@ -118,8 +163,7 @@
             $scope.fetchInfo();
           }
         });
-      }]
-    ).directive('yxInput', function() {
+      }]).directive('yxInput', function() {
       return {
         restrict: 'A',
         templateUrl: 'yx-input.html',
