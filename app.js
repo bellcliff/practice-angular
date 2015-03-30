@@ -1,5 +1,5 @@
 (function(angular, $) {
-  angular.module('xinyou', ['ui.bootstrap'])
+  angular.module('xinyou', ['ui.bootstrap', 'ngTouch'])
     .controller(
       'SearchController', ['$scope', '$http', '$location', function($scope, $http, $location) {
         $scope.results = false,
