@@ -11,7 +11,7 @@
       <th class="mobile-hidden">tag</th>
       <th class="mobile-hidden"></th>
     </tr>
-    <tr ng-repeat="item in results.data" ng-click="viewInfo(item.id, querydb)">
+    <tr class="row" ng-repeat="item in results.data" ng-click="viewInfo(item.id, querydb)">
       <td class="col-sm-4">{{item.name | limitTo: 25}}</td>
       <td class="col-sm-8">{{item.brief | limitTo: 50}}</td>
       <td class="mobile-hidden">{{item.platform}}</td>
@@ -21,5 +21,5 @@
     </tr>
   </table>
   <!-- pagination -->
-  <pagination total-items="results.totalnum" items-per-page="numPerPage" ng-model="currentPage"></pagination>
+  <pagination total-items="results.totalnum" max-size="5" items-per-page="numPerPage" ng-model="currentPage"></pagination>
 </div>
