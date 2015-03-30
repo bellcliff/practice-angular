@@ -3,8 +3,7 @@
   color: #808080;
 }
 @media screen and (max-width: 640px) {
-  .mobile-hidden {
-    visibility: hidden;
-    display: none;
+  .gl-content img {
+  	max-width:100%;
   }
 }
