@@ -166,7 +166,7 @@
 
     $scope.viewInfo = function(queryid, querydb) {
       $scope.queryid = queryid;
-      $scope.querydb = querydb;
+      $scope.querydb = querydb || 'xinyou';
       $scope.fetchInfo();
     };
 
